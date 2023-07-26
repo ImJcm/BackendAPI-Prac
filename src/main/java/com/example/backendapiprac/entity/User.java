@@ -1,5 +1,6 @@
 package com.example.backendapiprac.entity;
 
+import com.example.backendapiprac.dto.LoginRequestDto;
 import com.example.backendapiprac.dto.SignupRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -31,4 +32,8 @@ public class User {
         this.checkpassword = signupRequestDto.getCheckpassword();
     }
 
+    public User(LoginRequestDto loginRequestDto) {
+        this.username = loginRequestDto.getUsername();
+        this.password = loginRequestDto.getPassword();
+    }
 }

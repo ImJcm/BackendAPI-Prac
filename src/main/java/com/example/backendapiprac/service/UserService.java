@@ -1,9 +1,12 @@
 package com.example.backendapiprac.service;
 
 import com.example.backendapiprac.dto.ApiResponseDto;
+import com.example.backendapiprac.dto.LoginRequestDto;
 import com.example.backendapiprac.dto.SignupRequestDto;
 import com.example.backendapiprac.entity.User;
+import com.example.backendapiprac.jwt.JwtUtil;
 import com.example.backendapiprac.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
     public ResponseEntity<ApiResponseDto> onSignup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
@@ -40,5 +44,22 @@ public class UserService {
         userRepository.save(user);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(), "회원가입 성공"));
+    }
+
+    public ResponseEntity<ApiResponseDto> onLogin(LoginRequestDto loginRequestDto, HttpServletResponse res) {
+        String username = loginRequestDto.getUsername();
+        String password = loginRequestDto.getPassword();
+        User checkuserByUsername = userRepository.findByUsername(username);
+        User checkuserByPassword = userRepository.findByPassword(password);
+
+       if(checkuserByUsername == null || checkuserByPassword == null) {
+           return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(),"닉네임 또는 패스워드를 확인해주세요."));
+       }
+
+       String token = jwtUtil.createToken(username);
+
+       jwtUtil.addJwtToCookie(token, res);
+
+       return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(), "로그인 성공", token));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.backendapiprac.entity;
 
+import com.example.backendapiprac.dto.PostRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,19 @@ public class Post extends TimeStamp{
     @Column(name = "title")
     private String title;
 
-    @Column(name = "username")  //작성자 = nickname
+    @Column(name = "username")  //작성자명 = nickname
     private String username;
+
+    @Column(name = "contents")
+    private String contents;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Post(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.username = postRequestDto.getUsername();
+        this.contents = postRequestDto.getContents();
+    }
 }

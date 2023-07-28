@@ -20,7 +20,7 @@ public class UserService {
 
     public ResponseEntity<ApiResponseDto> onSignup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
-        User checkuser = userRepository.findByUsername(username);
+        User checkuser = userRepository.findByUsername(username).orElse(null);
 
         /* 닉네임 중복 체크 */
         if(checkuser != null) {
@@ -50,8 +50,8 @@ public class UserService {
     public ResponseEntity<ApiResponseDto> onLogin(LoginRequestDto loginRequestDto, HttpServletResponse res) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
-        User checkuserByUsername = userRepository.findByUsername(username);
-        User checkuserByPassword = userRepository.findByPassword(password);
+        User checkuserByUsername = userRepository.findByUsername(username).orElse(null);
+        User checkuserByPassword = userRepository.findByPassword(password).orElse(null);
 
        if(checkuserByUsername == null || checkuserByPassword == null) {
            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(),"닉네임 또는 패스워드를 확인해주세요."));

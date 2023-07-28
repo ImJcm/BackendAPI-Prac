@@ -6,3 +6,5 @@ backend API Practice Repository
   - master : 통합
   - signup : 회원가입
   - login : 로그인
+  - checkposts : 전체 게시글 조회
+  - registPost : 게시글 등록

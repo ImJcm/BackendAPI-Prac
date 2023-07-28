@@ -6,6 +6,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -25,6 +28,9 @@ public class User {
 
     @Column
     private String checkpassword;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    List<Post> postList = new ArrayList<>();
 
     public User(SignupRequestDto signupRequestDto) {
         this.username = signupRequestDto.getUsername();

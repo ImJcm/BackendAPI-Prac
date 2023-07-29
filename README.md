@@ -10,3 +10,4 @@ backend API Practice Repository
   - registPost : 게시글 등록
   - checkpost : 게시글 조회
   - updatepost : 게시글 수정
+  - deletepost : 게시글 삭제

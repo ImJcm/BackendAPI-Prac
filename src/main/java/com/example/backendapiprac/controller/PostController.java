@@ -40,4 +40,10 @@ public class PostController {
         return postService.updatePost(post_id, updatePostRequestDto, userDetails.getUser());
     }
 
+    /* 게시글 삭제 */
+    @DeleteMapping("/post")
+    public ResponseEntity<ApiResponseDto> deletePost(@RequestParam Long post_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.deletePost(post_id, userDetails.getUser());
+    }
+
 }

@@ -73,4 +73,22 @@ public class PostService {
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글 수정 성공", newPost));
     }
+
+    /* 게시글 삭제 */
+    @Transactional
+    public ResponseEntity<ApiResponseDto> deletePost(Long post_id, User user) {
+        Post post = postRepository.findById(post_id).orElse(null);
+
+        if(post == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.BAD_REQUEST.value(), "해당 게시글이 존재하지 않습니다."));
+        }
+
+        if(post.getUser().getId() != user.getId()) {
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.BAD_REQUEST.value(), "게시글의 작성자가 아닙니다."));
+        }
+
+        postRepository.delete(post);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글 삭제 성공"));
+    }
 }

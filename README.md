@@ -9,3 +9,4 @@ backend API Practice Repository
   - checkposts : 전체 게시글 조회
   - registPost : 게시글 등록
   - checkpost : 게시글 조회
+  - updatepost : 게시글 수정

@@ -3,6 +3,7 @@ package com.example.backendapiprac.service;
 import com.example.backendapiprac.dto.ApiResponseDto;
 import com.example.backendapiprac.dto.PostRequestDto;
 import com.example.backendapiprac.dto.PostResponseDto;
+import com.example.backendapiprac.dto.UpdatePostRequestDto;
 import com.example.backendapiprac.entity.Post;
 import com.example.backendapiprac.entity.User;
 import com.example.backendapiprac.repository.PostRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -46,5 +48,29 @@ public class PostService {
         PostResponseDto newPost = new PostResponseDto(post);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(),"게시글 조회 성공", newPost));
+    }
+
+    /* 게시글 수정 */
+    @Transactional
+    public ResponseEntity<ApiResponseDto> updatePost(Long post_id, UpdatePostRequestDto updatePostRequestDto, User user) {
+        Post post = postRepository.findById(post_id).orElse(null);
+
+        if(post == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponseDto(HttpStatus.BAD_REQUEST.value(), "해당 게시글이 존재하지 않습니다."));
+        }
+
+        if(post.getUser().getId() != user.getId()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponseDto(HttpStatus.BAD_REQUEST.value(), "게시글의 작성자가 아닙니다."));
+        }
+
+        String title = updatePostRequestDto.getTitle();
+        post.setTitle(title);
+
+        String contents = updatePostRequestDto.getContents();
+        post.setContents(contents);
+
+        PostResponseDto newPost = new PostResponseDto(post);
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글 수정 성공", newPost));
     }
 }

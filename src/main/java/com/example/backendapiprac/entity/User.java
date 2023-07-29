@@ -32,6 +32,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     List<Post> postList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    List<Comment> commentList = new ArrayList<>();
+
     public User(SignupRequestDto signupRequestDto) {
         this.username = signupRequestDto.getUsername();
         this.password = signupRequestDto.getPassword();

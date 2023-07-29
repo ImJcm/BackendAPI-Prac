@@ -12,3 +12,4 @@ backend API Practice Repository
   - updatepost : 게시글 수정
   - deletepost : 게시글 삭제
   - registcomment : 댓글 생성
+  - update_delete_checkcomment : 게시글과 댓글조회, 댓글 수정/삭제

@@ -3,11 +3,13 @@ package com.example.backendapiprac.entity;
 import com.example.backendapiprac.dto.CommentRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "Comment")
 public class Comment extends TimeStamp {
     @Id

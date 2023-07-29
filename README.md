@@ -8,3 +8,4 @@ backend API Practice Repository
   - login : 로그인
   - checkposts : 전체 게시글 조회
   - registPost : 게시글 등록
+  - checkpost : 게시글 조회

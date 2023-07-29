@@ -24,4 +24,9 @@ public class PostController {
     public ResponseEntity<ApiResponseDto> registPost(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.registPost(requestDto, userDetails.getUser());
     }
+
+    @GetMapping("/post")
+    public ResponseEntity<ApiResponseDto> getPost(@RequestParam Long post_id) {
+        return postService.getPost(post_id);
+    }
 }

@@ -14,3 +14,4 @@ backend API Practice Repository
   - registcomment : 댓글 생성
   - update_delete_checkcomment : 게시글과 댓글조회, 댓글 수정/삭제
   - controller_service_codeRefactoring : Controller, Service 패키지 내 클래스 개선
+  - Customexception_springaop : CustomException 정의 및 Spring AOP 적용

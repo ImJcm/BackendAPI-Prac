@@ -6,8 +6,11 @@ import com.example.backendapiprac.dto.PostResponseDto;
 import com.example.backendapiprac.dto.UpdatePostRequestDto;
 import com.example.backendapiprac.entity.Post;
 import com.example.backendapiprac.entity.User;
+import com.example.backendapiprac.exception.NotFoundException;
+import com.example.backendapiprac.exception.NotOwnerException;
 import com.example.backendapiprac.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -46,7 +49,7 @@ public class PostServiceImpl implements PostService{
         Post post = postRepository.findById(post_id).orElse(null);
 
         if(post == null) {
-            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+            throw new NotFoundException("해당 게시글이 존재하지 않습니다.");
         }
 
         PostResponseDto newPost = new PostResponseDto(post);
@@ -61,11 +64,11 @@ public class PostServiceImpl implements PostService{
         Post post = postRepository.findById(post_id).orElse(null);
 
         if(post == null) {
-            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+            throw new NotFoundException("해당 게시글이 존재하지 않습니다.");
         }
 
         if(post.getUser().getId() != user.getId()) {
-            throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
+            throw new NotOwnerException("게시글 작성자가 아닙니다.");
         }
 
         String title = updatePostRequestDto.getTitle();
@@ -86,11 +89,11 @@ public class PostServiceImpl implements PostService{
         Post post = postRepository.findById(post_id).orElse(null);
 
         if(post == null) {
-            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+            throw new NotFoundException("해당 게시글이 존재하지 않습니다.");
         }
 
         if(post.getUser().getId() != user.getId()) {
-            throw new IllegalArgumentException("게시글 작성자가 아닙니다.");
+            throw new NotOwnerException("게시글 작성자가 아닙니다.");
         }
 
         postRepository.delete(post);

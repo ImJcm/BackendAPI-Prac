@@ -7,6 +7,8 @@ import com.example.backendapiprac.dto.UpdateCommentRequestDto;
 import com.example.backendapiprac.entity.Comment;
 import com.example.backendapiprac.entity.Post;
 import com.example.backendapiprac.entity.User;
+import com.example.backendapiprac.exception.NotFoundException;
+import com.example.backendapiprac.exception.NotOwnerException;
 import com.example.backendapiprac.repository.CommentRepository;
 import com.example.backendapiprac.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class CommentServiceImpl implements CommentService{
         Post post = postRepository.findById(post_id).orElse(null);
 
         if(post == null) {
-            throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다.");
+            throw new NotFoundException("해당 게시글이 존재하지 않습니다.");
         }
 
         Comment comment = new Comment(commentRequestDto);
@@ -48,11 +50,11 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.findById(comment_id).orElse(null);
 
         if(comment == null) {
-            throw new IllegalArgumentException("해당 댓글이 존재하지 않습니다");
+            throw new NotFoundException("해당 댓글이 존재하지 않습니다");
         }
 
         if(comment.getUser().getId() != user.getId()) {
-            throw new IllegalArgumentException("댓글 작성자가 아닙니다.");
+            throw new NotOwnerException("댓글 작성자가 아닙니다.");
         }
 
         comment.setContents(updateCommentRequestDto.getContents());
@@ -69,11 +71,11 @@ public class CommentServiceImpl implements CommentService{
         Comment comment = commentRepository.findById(comment_id).orElse(null);
 
         if(comment == null) {
-            throw new IllegalArgumentException("해당 댓글이 존재하지 않습니다.");
+            throw new NotFoundException("해당 댓글이 존재하지 않습니다");
         }
 
         if(comment.getUser().getId() != user.getId()) {
-            throw new IllegalArgumentException("댓글 작성자가 아닙니다.");
+            throw new NotOwnerException("댓글 작성자가 아닙니다.");
         }
 
         commentRepository.delete(comment);

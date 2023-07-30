@@ -4,6 +4,7 @@ import com.example.backendapiprac.dto.ApiResponseDto;
 import com.example.backendapiprac.dto.LoginRequestDto;
 import com.example.backendapiprac.dto.SignupRequestDto;
 import com.example.backendapiprac.entity.User;
+import com.example.backendapiprac.exception.NotFoundException;
 import com.example.backendapiprac.jwt.JwtUtil;
 import com.example.backendapiprac.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
         User checkuserByUsernameByPassword = userRepository.findByUsernameAndPassword(username,password).orElse(null);
 
        if(checkuserByUsernameByPassword == null) {
-           throw new IllegalArgumentException("닉네임 또는 패스워드를 확인해주세요.");
+           throw new NotFoundException("닉네임 또는 패스워드를 확인해주세요.");
        }
 
        String token = jwtUtil.createToken(username);

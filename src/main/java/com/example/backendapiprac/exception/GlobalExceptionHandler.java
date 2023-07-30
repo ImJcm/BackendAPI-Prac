@@ -16,4 +16,22 @@ public class GlobalExceptionHandler {
           HttpStatus.BAD_REQUEST
         );
     }
+
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<ApiResponseDto> handleNotFoundException(NotFoundException e) {
+        ApiResponseDto apiResponseDto = new ApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ResponseEntity<>(
+                apiResponseDto,
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler({NotOwnerException.class})
+    public ResponseEntity<ApiResponseDto> handleNotFoundException(NotOwnerException e) {
+        ApiResponseDto apiResponseDto = new ApiResponseDto(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return new ResponseEntity<>(
+                apiResponseDto,
+                HttpStatus.BAD_REQUEST
+        );
+    }
 }

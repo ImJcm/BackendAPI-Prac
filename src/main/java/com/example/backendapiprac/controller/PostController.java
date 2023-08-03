@@ -46,4 +46,11 @@ public class PostController {
         return postServiceImpl.deletePost(post_id, userDetails.getUser());
     }
 
+    /* 게시글 keywork 검색 */
+    // Format : /api/post/search?keyword="~~"
+    @GetMapping("/post/search")
+    public ResponseEntity<ApiResponseDto> searchPost(@RequestParam String keyword) {
+        return postServiceImpl.searchPost(keyword);
+    }
+
 }

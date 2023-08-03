@@ -9,8 +9,8 @@ import com.example.backendapiprac.entity.User;
 import com.example.backendapiprac.exception.NotFoundException;
 import com.example.backendapiprac.exception.NotOwnerException;
 import com.example.backendapiprac.repository.PostRepository;
+import com.example.backendapiprac.repository.PostRepositoryQueryImpl;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.NotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
+    private final PostRepositoryQueryImpl postRepositoryQuery;
 
     /* 게시글 전체 조회 */
     @Override
@@ -99,5 +100,15 @@ public class PostServiceImpl implements PostService{
         postRepository.delete(post);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto(HttpStatus.OK.value(), "게시글 삭제 성공"));
+    }
+
+    /* 게시글 keyword 검색 - QueryDSL */
+    @Override
+    public ResponseEntity<ApiResponseDto> searchPost(String keyword) {
+        List<Post> post = postRepositoryQuery.search(keyword);
+
+        List<PostResponseDto> newPost = post.stream().map(PostResponseDto::new).toList();
+
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "키워드 게시글 조회 성공",newPost));
     }
 }

@@ -20,4 +20,7 @@ public interface PostService {
 
     /* 게시글 삭제 */
     ResponseEntity<ApiResponseDto> deletePost(Long post_id, User user);
+
+    /* 게시글 제목 keyword 검색 - QueryDSL */
+    ResponseEntity<ApiResponseDto> searchPost(String keyword);
 }

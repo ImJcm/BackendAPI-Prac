@@ -46,11 +46,23 @@ public class PostController {
         return postServiceImpl.deletePost(post_id, userDetails.getUser());
     }
 
-    /* 게시글 keywork 검색 */
+    /* 게시글 keywork 검색 - QueryDSL*/
     // Format : /api/post/search?keyword="~~"
     @GetMapping("/post/search")
     public ResponseEntity<ApiResponseDto> searchPost(@RequestParam String keyword) {
         return postServiceImpl.searchPost(keyword);
+    }
+
+    /* 게시글 keywork 검색 - QueryDSL & Pageing*/
+    // Format : /api/post/search?keyword="~~"&page=?&size=?&sortBy=?&isAsc=?
+    @GetMapping("/post/searchPageable")
+    public ResponseEntity<ApiResponseDto> searchPageablePost(
+            @RequestParam String keyword,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("isAsc") boolean isAsc) {
+        return postServiceImpl.searchPageablePost(keyword, page, size, sortBy, isAsc);
     }
 
 }

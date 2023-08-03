@@ -11,6 +11,10 @@ import com.example.backendapiprac.exception.NotOwnerException;
 import com.example.backendapiprac.repository.PostRepository;
 import com.example.backendapiprac.repository.PostRepositoryQueryImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
-    private final PostRepositoryQueryImpl postRepositoryQuery;
+    //private final PostRepositoryQueryImpl postRepositoryQuery;
 
     /* 게시글 전체 조회 */
     @Override
@@ -105,10 +109,25 @@ public class PostServiceImpl implements PostService{
     /* 게시글 keyword 검색 - QueryDSL */
     @Override
     public ResponseEntity<ApiResponseDto> searchPost(String keyword) {
-        List<Post> post = postRepositoryQuery.search(keyword);
+        //List<Post> post = postRepositoryQuery.search(keyword);
+        List<Post> post = postRepository.search(keyword);
 
         List<PostResponseDto> newPost = post.stream().map(PostResponseDto::new).toList();
 
         return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "키워드 게시글 조회 성공",newPost));
+    }
+
+    public ResponseEntity<ApiResponseDto> searchPageablePost(String keyword, Integer page, Integer size, String sortBy, Boolean isAsc) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+
+        Pageable pageable = PageRequest.of(page,size,sort);
+
+        //Page<Post> postList = postRepository.searchPageable(keyword, pageable);
+        List<Post> postList = postRepository.searchPageable(keyword, pageable);
+
+        List<PostResponseDto> newPostList = postList.stream().map(PostResponseDto::new).toList();
+
+        return ResponseEntity.ok(new ApiResponseDto(HttpStatus.OK.value(), "게시글 keyword 페이징 조회 성공", newPostList));
     }
 }

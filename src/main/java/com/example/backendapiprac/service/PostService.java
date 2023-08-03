@@ -23,4 +23,9 @@ public interface PostService {
 
     /* 게시글 제목 keyword 검색 - QueryDSL */
     ResponseEntity<ApiResponseDto> searchPost(String keyword);
+
+    /* 게시글 keyword 검색 - QueryDSL + Paging */
+    ResponseEntity<ApiResponseDto> searchPageablePost(String keyword, Integer page, Integer size, String sortBy, Boolean isAsc);
+
+
 }
